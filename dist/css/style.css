@@ -1,0 +1,41 @@
+.sprite {
+  width: 20%;
+  margin: 60px 0; }
+
+.s1, .s2, .s3, .s4 {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin: 0 5px;
+  background: url(../img/socials.png) no-repeat; }
+
+.s1 {
+  background-position: 0px -32px; }
+  .s1:hover {
+    background-position: 0 0; }
+
+.s2 {
+  background-position: -32px -32px; }
+  .s2:hover {
+    background-position: -32px 0; }
+
+.s3 {
+  background-position: -64px -32px; }
+  .s3:hover {
+    background-position: -64px 0; }
+
+.s4 {
+  background-position: -96px -32px; }
+  .s4:hover {
+    background-position: -96px 0; }
+
+.hide-price {
+  display: none; }
+
+@media (max-width: 1249px) and (min-width: 1000px) {
+  .product_price_club_card_text {
+    margin-right: 6px; } }
+
+@media (max-width: 999px) and (min-width: 0) {
+  .product_price_club_card_text {
+    margin-right: 6px; } }

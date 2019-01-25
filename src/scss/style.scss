@@ -1,0 +1,16 @@
+@import 'sprite';
+
+.hide-price {
+    display: none;
+}
+
+@media (max-width: 1249px) and (min-width: 1000px){
+.product_price_club_card_text {
+    margin-right: 6px;
+}
+}
+@media (max-width: 999px) and (min-width: 0){
+.product_price_club_card_text {
+    margin-right: 6px;
+}
+}
