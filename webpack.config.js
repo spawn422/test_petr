@@ -1,10 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJSPlugin =  require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ImageminPlugin = require('imagemin-webpack-plugin').default
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const NODE_ENV = process.env.NODE_ENV || "development";
 
 //var isProduction = process.env.NODE_ENV === 'production';
 
@@ -43,7 +44,7 @@ let conf = {
 						        }
 						      }
 						    },
-								{
+								/*{
 									test: /\.scss$/,
 									use: ExtractTextPlugin.extract({
 										use:[
@@ -62,6 +63,10 @@ let conf = {
 										],
 										fallback:'style-loader'
 									})
+								},*/
+								{
+									test: /\.scss$/,
+									use:  [  'style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
 								},
 								{
 									test: /\.(png|gif|jpe?g)$/,
@@ -97,15 +102,15 @@ let conf = {
 				],
 		},
 		plugins: [
-					new webpack.ProvidePlugin({
-							$:'jquery',
-							jQuery: 'jquery',
-							jquery: 'jquery',
-							Popper: ['popper.js', 'default']
-					}),
+				new webpack.ProvidePlugin({
+						$:'jquery',
+						jQuery: 'jquery',
+						jquery: 'jquery',
+						Popper: ['popper.js', 'default']
+				}),
 					
-			    new ExtractTextPlugin({
-      		filename: './css/style.css'
+			    new MiniCssExtractPlugin({
+      				filename: './css/style.css'
     			}),
 
     			new CleanWebpackPlugin(
@@ -123,23 +128,61 @@ let conf = {
     								{glob: 'svg/*'},
     					]
     				}
-    			)
-    			
+				),
+
+				// new ImageminPlugin ({
+				// 	disable: process.env.NODE_ENV !== 'development',
+				// 	pngquant: {
+				// 		quality: '95-100'
+				// 	  },
+				// 	test: /\.(png|jpe?g|gid|svg)$/i
+				// }),
+
+				// new webpack.LoaderOptionsPlugin ({
+				// 	minimiza:true
+				// }),	
+				// new UglifyJsPlugin({
+				//   test: /\.js(\?.*)?$/i,
+				// }),
+
+
 		],
 };
 
+if(NODE_ENV == "'production'") {
+	console.log("this is the prod env!!!!!!!!!!");
+	conf.plugins.push(  
+				
+	
+		new UglifyJsPlugin({
+		  test: /\.js(\?.*)?$/i,
+		}),
+		new ImageminPlugin ({
+			pngquant: {
+				quality: '50-60'
+			  },
+			test: /\.(png|jpe?g|gid|svg)$/i
+		}),
+		new webpack.LoaderOptionsPlugin ({
+			minimiza:true
+		}),
+	
+	)
+}
+
+
 /*if (isProduction) {
- 	module.exports.plugins.push (
+ 	conf.plugins.push (
  		new UglifyJSPlugin ({
  			sourceMap:true
  		}),
  	);
- 	module.exports.plugins.push (
+ 	conf.plugins.push (
  		new ImageminPlugin ({
  			test: /\.(png|jpe?g|gid|svg)$/i
  		}),
  	);
- 	module.exports.plugins.push (
+ 	conf.plugins.push (
  		new webpack.LoaderOptionsPlugin ({
  			minimiza:true
  		}),
@@ -149,26 +192,8 @@ module.exports = (env, options) => {
 	let production = options.mode === 'production';
 
 	conf.devtool = production 
-										? false//'sourcemap'
+										? false
 										: 'eval-sourcemap';
-
-
-	// if (options.mode === 'production'){
-	// 	module.exports.env.push (
-	// 		new webpack.optimize.UglifyJsPlugin ({
-	// 				sourceMap:true
-	// 		}),
-	// 	);
-	// 	module.exports.plugins.push (
-	// 		new ImageminPlugin ({
-	// 			test: /\.(png|jpe?g|gid|svg)$/i
-	// 		}),
-	// 	);
-	// 	module.exports.plugins.push (
-	// 		new webpack.LoaderOptionsPlugin ({
-	// 			minimiza:true
-	// 		}),
-	// 	);
-	// }
+	
 	return conf;
 }
