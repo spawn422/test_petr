@@ -69,13 +69,14 @@ let conf = {
 									use:  [  'style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
 								},
 								{
-									test: /\.(png|gif|jpe?g)$/,
+									test: /\.(png|gif|jpe?g)$/i,
 									loaders:[
 										{
 											loader: 'file-loader',
 											options:{
 													name: '[name].[ext]',
-													publicPath:"../img/"
+													//publicPath:"/img"
+													outputPath: './img',
 											},
 										},
 										'img-loader',
@@ -103,10 +104,11 @@ let conf = {
 		},
 		plugins: [
 				new webpack.ProvidePlugin({
-						$:'jquery',
-						jQuery: 'jquery',
-						jquery: 'jquery',
-						Popper: ['popper.js', 'default']
+					Vue: ['vue/dist/vue.esm.js', 'default'],
+					$:'jquery',
+					jQuery: 'jquery',
+					jquery: 'jquery',
+					Popper: ['popper.js', 'default']
 				}),
 					
 			    new MiniCssExtractPlugin({
@@ -121,17 +123,16 @@ let conf = {
 
     			new CopyWebpackPlugin(
     				[
-    						{from: './src/img', to: 'img'}
+    						{from: './src/img', to: './img'}
     				],
     				{
    					ignore:[
     								{glob: 'svg/*'},
     					]
     				}
-				),
+					),
 
 				// new ImageminPlugin ({
-				// 	disable: process.env.NODE_ENV !== 'development',
 				// 	pngquant: {
 				// 		quality: '95-100'
 				// 	  },
@@ -149,26 +150,7 @@ let conf = {
 		],
 };
 
-if(NODE_ENV == "'production'") {
-	console.log("this is the prod env!!!!!!!!!!");
-	conf.plugins.push(  
-				
-	
-		new UglifyJsPlugin({
-		  test: /\.js(\?.*)?$/i,
-		}),
-		new ImageminPlugin ({
-			pngquant: {
-				quality: '50-60'
-			  },
-			test: /\.(png|jpe?g|gid|svg)$/i
-		}),
-		new webpack.LoaderOptionsPlugin ({
-			minimiza:true
-		}),
-	
-	)
-}
+
 
 
 /*if (isProduction) {
@@ -190,6 +172,28 @@ if(NODE_ENV == "'production'") {
  }*/
 module.exports = (env, options) => {
 	let production = options.mode === 'production';
+
+	if(production) {
+		console.log("this is the prod env!!!!!!!!!!");
+		conf.plugins.push( 
+			new ImageminPlugin ({
+				pngquant: {
+					quality: '50-60'
+					},
+				test: /\.(png|jpe?g|gid|svg)$/i
+			}), 
+		);			
+		conf.plugins.push(
+			new UglifyJsPlugin({
+				test: /\.js(\?.*)?$/i,
+			}),
+		);
+		conf.plugins.push(
+			new webpack.LoaderOptionsPlugin ({
+				minimiza:true
+			}),
+		);
+	}
 
 	conf.devtool = production 
 										? false

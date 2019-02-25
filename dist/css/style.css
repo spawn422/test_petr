@@ -7,7 +7,7 @@
   width: 32px;
   height: 32px;
   margin: 0 5px;
-  background: url(../img/socials.png) no-repeat; }
+  background: url(/dist/img/socials.png) no-repeat; }
 
 .s1 {
   background-position: 0px -32px; }
@@ -39,3 +39,4 @@
 @media (max-width: 999px) and (min-width: 0) {
   .product_price_club_card_text {
     margin-right: 6px; } }
+

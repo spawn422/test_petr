@@ -72,3 +72,23 @@ function loadProducts(){
         };
     });
 };
+
+// var x = 'Blaz',
+//     y = 'Der',
+//     v;
+
+// for (let i=1; i<100; i++){
+//     v=i%5;
+//     console.log(i+' ' + v)
+//     if (i%3==0 ){
+//         //console.log(i+' '+x);
+//     if (i%5==0){
+//         console.log(i+' '+y);
+//     }
+//     if ((i%3==0)&&(i%5==0)){
+//         //console.log(i+' '+x+y);
+//     }
+
+//     }
+
+// };
